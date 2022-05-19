@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using HospitalProject.Data;
 using HospitalProject.Models;
 using HospitalProject.Repository;
@@ -44,8 +45,9 @@ namespace HospitalProject.DapperRepository
 
         public List<Hospital> GetAll()
         {
-            var sql = "SELECT * FROM hospital";
-            return db.Query<Hospital>(sql).ToList();
+            //var sql = "SELECT * FROM hospital";
+            //return db.Query<Hospital>(sql).ToList();
+            return db.GetAll<Hospital>().ToList();
         }
 
         public void Remove(int id)

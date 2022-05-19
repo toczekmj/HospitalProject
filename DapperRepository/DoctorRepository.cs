@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using HospitalProject.Data;
 using HospitalProject.Models;
 using HospitalProject.Repository;
 using HospitalProject.ViewModel;

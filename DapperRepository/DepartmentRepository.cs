@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using HospitalProject.Data;
 using HospitalProject.Models;
 using HospitalProject.Repository;
 using HospitalProject.ViewModel;
@@ -9,8 +8,6 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Dapper.Contrib;
-using Dapper.Contrib.Extensions;
 
 namespace HospitalProject.DapperRepository
 {

@@ -7,7 +7,7 @@ namespace HospitalProject.Models
     public class Department
     {   
         
-        //[Display(Name = "ID")]
+        [Display(Name = "ID")]
         [ExplicitKey]
         public int departmentId { get; set; }
         [Display(Name = "Department Name")]
@@ -15,6 +15,7 @@ namespace HospitalProject.Models
         [Display(Name = " Hospital ID")]
         public int hospitalId { get; set; }
         [Display(Name = "Hospital")]
-        public Hospital hospital { get; set; }
+        public virtual Hospital hospital { get; set; }
+
     }
 }

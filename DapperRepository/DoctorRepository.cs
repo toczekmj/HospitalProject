@@ -44,10 +44,10 @@ namespace HospitalProject.DapperRepository
             return result;
         }
 
-        public List<DoctorVM> GetAll()
+        public List<Doctor> GetAll()
         {
             var procname = "getallproc";
-            var doctors = db.Query<DoctorVM>(procname, commandType: CommandType.StoredProcedure).ToList();
+            var doctors = db.Query<Doctor>(procname, commandType: CommandType.StoredProcedure).ToList();
             return doctors;
         }
 
@@ -78,6 +78,17 @@ namespace HospitalProject.DapperRepository
             var sql = "SELECT specialityId FROM speciality";
             var temp =  db.Query<Speciality>(sql).ToList();
             return temp;
+        }
+
+        public List<Doctor> GetDoctorsWithSpecialities()
+        {
+            var sql = "SELECT d.*, s.* FROM doctor d INNER JOIN speciality s ON d.specialityId = s.specialityId";
+            var result = db.Query<Doctor, Speciality, Doctor>(sql,
+                (doc, spec) => {
+                    doc.speciality = spec;
+                    return doc;
+                }, splitOn: "specialityId");
+            return result.ToList();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HospitalProject.ViewModel.DepartmentVM>
+﻿@model IEnumerable<HospitalProject.Models.Department>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.departmentName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.hospitalName)
+                @Html.DisplayNameFor(model => model.hospital.hospitalName)
             </th>
             <th></th>
         </tr>
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.departmentName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.hospitalName)
+                @Html.DisplayFor(modelItem => item.hospital.hospitalName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.departmentId">Edit</a> |

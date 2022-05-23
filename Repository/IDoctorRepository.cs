@@ -8,10 +8,11 @@ namespace HospitalProject.Repository
     public interface IDoctorRepository
     {
         Doctor Find(int id);
-        List<DoctorVM> GetAll();
+        List<Doctor> GetAll();
         Doctor Add(Doctor doctor);
         Doctor Update(Doctor doctor);
         void Remove(int id);
         public List<Speciality> GetSpecialities();
+        List<Doctor> GetDoctorsWithSpecialities();
     }
 }

@@ -8,6 +8,6 @@ namespace HospitalProject.Models
         public int doctorId { get; set; }
         public int departmentId { get; set; }
         public Doctor doctor { get; set; }
-        public Department department { get; set; }
+        public virtual Department department { get; set; }
     }
 }

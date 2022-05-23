@@ -70,6 +70,9 @@ namespace HospitalProject.DapperRepository
                         departmentName = d.departmentName,
                         hospitalName = h.hospitalName
                     };
+
+            //hosp.GroupJoin(dep, (hosp => hosp.hospitalId), (dep => dep.hospitalId), (hospital, departments) => new {  });
+
             return f.ToList();
         }
 
@@ -87,6 +90,17 @@ namespace HospitalProject.DapperRepository
         public List<Hospital> GetHospitals()
         {
             return db.GetAll<Hospital>().ToList();
+        }
+
+        public List<Department> GetDepartmentsWithHospitals()
+        {
+            var sql = "SELECT d.*, h.* FROM department d INNER JOIN hospital h ON d.hospitalId = h.hospitalId;";
+            var result = db.Query<Department, Hospital, Department>(sql, (dep, hosp) =>
+            {
+                dep.hospital = hosp;
+                return dep;
+            }, splitOn: "hospitalId").ToList();
+            return result;
         }
     }
 }

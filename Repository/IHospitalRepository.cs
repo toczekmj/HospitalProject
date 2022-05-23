@@ -10,5 +10,6 @@ namespace HospitalProject.Repository
         Hospital Add(Hospital hospital);
         Hospital Update(Hospital hospital);
         void Remove(int id);
+        Hospital GetDepartment(int id);
     }
 }

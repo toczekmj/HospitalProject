@@ -20,13 +20,11 @@ namespace HospitalProject.Controllers
             _hospRepo = hospRepo;
         }
 
-        // GET: Hospitals
         public async Task<IActionResult> Index()
         {
             return View(_hospRepo.GetAll());
         }
 
-        // GET: Hospitals/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,7 +32,8 @@ namespace HospitalProject.Controllers
                 return NotFound();
             }
 
-            var hospital = _hospRepo.Find(id.GetValueOrDefault());
+            //var hospital = _hospRepo.Find(id.GetValueOrDefault());
+            var hospital = _hospRepo.GetDepartment(id.GetValueOrDefault());
             if (hospital == null)
             {
                 return NotFound();
@@ -43,15 +42,11 @@ namespace HospitalProject.Controllers
             return View(hospital);
         }
 
-        // GET: Hospitals/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Hospitals/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("hospitalId,hospitalName")] Hospital hospital)
@@ -64,7 +59,6 @@ namespace HospitalProject.Controllers
             return View(hospital);
         }
 
-        // GET: Hospitals/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,10 +74,7 @@ namespace HospitalProject.Controllers
             return View(hospital);
         }
 
-        // POST: Hospitals/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("hospitalId,hospitalName")] Hospital hospital)
         {
@@ -100,7 +91,6 @@ namespace HospitalProject.Controllers
             return View(hospital);
         }
 
-        // GET: Hospitals/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

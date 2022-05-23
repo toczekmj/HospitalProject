@@ -13,5 +13,6 @@ namespace HospitalProject.Repository
         Department Update(Department department);
         void Remove(int id);
         public List<Hospital> GetHospitals();
+        public List<Department> GetDepartmentsWithHospitals();
     }
 }

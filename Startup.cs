@@ -1,8 +1,10 @@
 using HospitalProject.DapperRepository;
 using HospitalProject.Data;
+using HospitalProject.Fitlers;
 using HospitalProject.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +26,6 @@ namespace HospitalProject
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -34,6 +35,12 @@ namespace HospitalProject
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<ISpecialityRepository, SpecialityRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //services.AddScoped<IBonusRepository, BonusRepository>();
+
+            
+            //filters 
+
+
 
             services.AddControllersWithViews();
         }

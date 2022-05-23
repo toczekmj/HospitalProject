@@ -50,6 +50,26 @@ namespace HospitalProject.DapperRepository
             return db.GetAll<Hospital>().ToList();
         }
 
+        public Hospital GetDepartment(int id)
+        {
+            var p = new
+            {
+                hospitalId = id
+            };
+
+            var sql = "SELECT * FROM hospital WHERE hospitalId = @hospitalId;"
+                + "SELECT * FROM department WHERE hospitalId = @hospitalId;";
+
+            Hospital hospital;
+            using (var lists = db.QueryMultiple(sql, p))
+            {
+                hospital = lists.Read<Hospital>().ToList().FirstOrDefault();
+                hospital.departmentList = lists.Read<Department>().ToList();
+            }
+
+            return hospital;
+        }
+
         public void Remove(int id)
         {
             var sql = "DELETE FROM hospital WHERE hospitalId = @id";

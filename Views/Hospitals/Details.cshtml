@@ -18,6 +18,39 @@
         </dd>
     </dl>
 </div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.departmentList.FirstOrDefault().departmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.departmentList.FirstOrDefault().departmentName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.departmentList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.departmentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.departmentName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+
+
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.hospitalId">Edit</a> |
     <a asp-action="Index">Back to List</a>

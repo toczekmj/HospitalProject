@@ -16,19 +16,21 @@ namespace HospitalProject.Controllers
         private readonly ISpecialityRepository _specRepo;
         private readonly IDoctorRepository _docRepo;
 
+
+
         public DoctorsController(IDoctorRepository docRepo, ISpecialityRepository specRepo)
         {
             _specRepo = specRepo;
             _docRepo = docRepo;
         }
 
-        // GET: Doctors
         public IActionResult Index()
         {
-            return View(_docRepo.GetAll());
+            List<Doctor> doctors = _docRepo.GetDoctorsWithSpecialities();
+            return View(doctors);
+            //return View(_docRepo.GetAll());
         }
 
-        // GET: Doctors/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -45,7 +47,6 @@ namespace HospitalProject.Controllers
             return View(doctor);
         }
 
-        // GET: Doctors/Create
         public IActionResult Create()
         {
             IEnumerable<SelectListItem> doctorList = _specRepo.GetAll().Select(d => new SelectListItem{
@@ -56,10 +57,7 @@ namespace HospitalProject.Controllers
             return View();
         }
 
-        // POST: Doctors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("doctorId,firstName,lastName,specialityId")] Doctor doctor)
         {
@@ -68,12 +66,9 @@ namespace HospitalProject.Controllers
                 _docRepo.Add(doctor);
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["specialityId"] = new SelectList(_docRepo.GetSpecialities(), "specialityId", "specialityId", doctor.specialityId);
-            //ViewData["specialityId"] = new SelectList(_docRepo.GetSpecialities(), "specialityName", "specialityId", doctor.specialityId);
             return View(doctor);
         }
 
-        // GET: Doctors/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -90,9 +85,6 @@ namespace HospitalProject.Controllers
             return View(doctor);
         }
 
-        // POST: Doctors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("doctorId,firstName,lastName,specialityId")] Doctor doctor)
@@ -111,7 +103,6 @@ namespace HospitalProject.Controllers
             return View(doctor);
         }
 
-        // GET: Doctors/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)

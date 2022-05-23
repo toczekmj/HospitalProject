@@ -14,6 +14,6 @@ namespace HospitalProject.Models
         [Display(Name = "Speciality ID")]
         public int specialityId { get; set; }
         [Display(Name = "Speciality")]
-        public Speciality speciality { get; set; }
+        public virtual Speciality speciality { get; set; }
     }
 }

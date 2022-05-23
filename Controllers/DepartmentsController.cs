@@ -19,15 +19,13 @@ namespace HospitalProject.Controllers
             _depCont = depCont;
         }
 
-        // GET: Departments
         public IActionResult Index()
         {
-            //var applicationDbContext = _context.department.Include(d => d.hospital);
-            return View(_depCont.GetAll());
-            //return View(await applicationDbContext.ToListAsync());
+            List<Department> departments = _depCont.GetDepartmentsWithHospitals();
+            return View(departments);
+            //return View(_depCont.GetAll());
         }
 
-        // GET: Departments/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -35,10 +33,9 @@ namespace HospitalProject.Controllers
                 return NotFound();
             }
 
-            //var department = await _context.department
-            //    .Include(d => d.hospital)
-            //    .FirstOrDefaultAsync(m => m.departmentId == id);
             var department = _depCont.Find(id.GetValueOrDefault());
+            Department helper = _depCont.GetDepartmentsWithHospitals().Where(p => p.departmentId == id.GetValueOrDefault()).ToList().FirstOrDefault();
+            department.hospital = helper.hospital;
             if (department == null)
             {
                 return NotFound();
@@ -46,33 +43,24 @@ namespace HospitalProject.Controllers
 
             return View(department);
         }
-
-        // GET: Departments/Create
         public IActionResult Create()
         {
             ViewData["hospitalId"] = new SelectList(_depCont.GetHospitals(), "hospitalId", "hospitalId");
             return View();
         }
 
-        // POST: Departments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("departmentId,departmentName,hospitalId")] Department department)
         {
             if (ModelState.IsValid)
             {
-                //_context.Add(department);
-                //await _context.SaveChangesAsync();
                 _depCont.Add(department);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["hospitalId"] = new SelectList(_depCont.GetHospitals(), "hospitalId", "hospitalId", department.hospitalId);
             return View(department);
         }
-
-        // GET: Departments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,7 +68,6 @@ namespace HospitalProject.Controllers
                 return NotFound();
             }
 
-            //var department = await _context.department.FindAsync(id);
             var department = _depCont.Find(id.GetValueOrDefault());
             if (department == null)
             {
@@ -90,9 +77,6 @@ namespace HospitalProject.Controllers
             return View(department);
         }
 
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("departmentId,departmentName,hospitalId")] Department department)
@@ -111,7 +95,6 @@ namespace HospitalProject.Controllers
             return View(department);
         }
 
-        // GET: Departments/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)

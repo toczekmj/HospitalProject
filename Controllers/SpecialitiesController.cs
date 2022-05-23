@@ -21,13 +21,11 @@ namespace HospitalProject.Controllers
             _specRepo = spec;
         }
 
-        // GET: Specialities
         public IActionResult Index()
         {
             return View(_specRepo.GetAll());
         }
 
-        // GET: Specialities/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -43,16 +41,11 @@ namespace HospitalProject.Controllers
 
             return View(speciality);
         }
-
-        // GET: Specialities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Specialities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("specialityId,specialityName")] Speciality speciality)
@@ -64,8 +57,6 @@ namespace HospitalProject.Controllers
             }
             return View(speciality);
         }
-
-        // GET: Specialities/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -81,9 +72,6 @@ namespace HospitalProject.Controllers
             return View(speciality);
         }
 
-        // POST: Specialities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("specialityId,specialityName")] Speciality speciality)
@@ -101,7 +89,6 @@ namespace HospitalProject.Controllers
             return View(speciality);
         }
 
-        // GET: Specialities/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)

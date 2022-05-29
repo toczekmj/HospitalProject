@@ -11,6 +11,7 @@ using HospitalProject.Repository;
 
 namespace HospitalProject.Controllers
 {
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class HospitalsController : Controller
     {
         private readonly IHospitalRepository _hospRepo;
@@ -20,19 +21,18 @@ namespace HospitalProject.Controllers
             _hospRepo = hospRepo;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View(_hospRepo.GetAll());
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            //var hospital = _hospRepo.Find(id.GetValueOrDefault());
             var hospital = _hospRepo.GetDepartment(id.GetValueOrDefault());
             if (hospital == null)
             {
@@ -49,7 +49,7 @@ namespace HospitalProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("hospitalId,hospitalName")] Hospital hospital)
+        public IActionResult Create([Bind("hospitalId,hospitalName")] Hospital hospital)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace HospitalProject.Controllers
             return View(hospital);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -76,7 +76,7 @@ namespace HospitalProject.Controllers
 
          [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("hospitalId,hospitalName")] Hospital hospital)
+        public IActionResult Edit(int id, [Bind("hospitalId,hospitalName")] Hospital hospital)
         {
             if (id != hospital.hospitalId)
             {
@@ -91,7 +91,7 @@ namespace HospitalProject.Controllers
             return View(hospital);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {

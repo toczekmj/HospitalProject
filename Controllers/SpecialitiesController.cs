@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace HospitalProject.Controllers
 {
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class SpecialitiesController : Controller
     {
         private readonly ISpecialityRepository _specRepo;

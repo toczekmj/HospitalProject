@@ -23,9 +23,13 @@
                 <span asp-validation-for="lastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="specialityId" class="control-label"></label>
+                <label asp-for="specialityId" class="control-label">Speciality</label>
                 <select asp-for="specialityId" class ="form-control" asp-items="@ViewBag.DoctorsList"></select>
             </div>
+            @*<div class="form-group">
+                <label asp-for="specialityId" class="control-label">Department</label>
+                <select asp-for="specialityId" class ="form-control" asp-items="@ViewBag.DepartmentList"></select>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

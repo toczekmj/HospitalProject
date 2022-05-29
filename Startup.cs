@@ -1,7 +1,9 @@
 using HospitalProject.DapperRepository;
 using HospitalProject.Data;
-using HospitalProject.Fitlers;
+using HospitalProject.Filters;
 using HospitalProject.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,12 +37,33 @@ namespace HospitalProject
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<ISpecialityRepository, SpecialityRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+
+            //services.AddControllers(options =>
+            //{
+            //    options.Filters.Add(new MyFilter());
+            //});
+
+
+
             //services.AddScoped<IBonusRepository, BonusRepository>();
 
-            
-            //filters 
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme
+
+            //)
+
+            //jwt
+            //services.AddAuthentication(auth =>
+            //{
+            //    auth.DefaultAuthenticateScheme = JwtBearerDefaults
+            //});
 
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = new PathString("/Account/login");
+                //options.ExpireTimeSpan = TimeSpan.MinValue;
+            });
 
             services.AddControllersWithViews();
         }
@@ -63,8 +86,8 @@ namespace HospitalProject
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

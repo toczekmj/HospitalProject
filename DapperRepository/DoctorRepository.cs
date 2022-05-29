@@ -31,6 +31,12 @@ namespace HospitalProject.DapperRepository
                 @specialityId = doctor.specialityId
             }, commandType: CommandType.StoredProcedure).Single();
             doctor.doctorId = id;
+
+
+            //    var sql2 = "INSERT INTO doctor_department (doctorId, departmentId) VALUES(@doctorId, @departmentId);";
+            //db.Execute(sql2);
+
+
             return doctor;
         }
 

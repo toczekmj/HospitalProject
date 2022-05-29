@@ -1,0 +1,32 @@
+﻿@model HospitalProject.Models.Department
+
+@{
+    ViewData["Title"] = "AddDoctor";
+}
+
+<h1>Add Doctor to department</h1>
+
+<h4>Department</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddDoctor">
+            <div class="form-group">
+                <label asp-for="departmentId" class="control-label"></label>
+                <input asp-for="departmentId" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="doctorId" class="control-label"></label>
+                <select asp-for="doctorId" class="form-control" asp-items="@ViewBag.DoctorList"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

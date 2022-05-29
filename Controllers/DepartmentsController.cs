@@ -7,23 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HospitalProject.Data;
 using HospitalProject.Models;
+using HospitalProject.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalProject.Controllers
 {
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class DepartmentsController : Controller
     {
         private readonly Repository.IDepartmentRepository _depCont;
+        private readonly IHospitalRepository _hosRep;
+        private readonly IDoctorRepository _docRep;
 
-        public DepartmentsController(Repository.IDepartmentRepository depCont)
+        public DepartmentsController(Repository.IDepartmentRepository depCont, Repository.IHospitalRepository hosRep, Repository.IDoctorRepository docRep)
         {
             _depCont = depCont;
+            _hosRep = hosRep;
+            _docRep = docRep;
         }
 
         public IActionResult Index()
         {
             List<Department> departments = _depCont.GetDepartmentsWithHospitals();
             return View(departments);
-            //return View(_depCont.GetAll());
         }
 
         public IActionResult Details(int? id)
@@ -36,6 +42,10 @@ namespace HospitalProject.Controllers
             var department = _depCont.Find(id.GetValueOrDefault());
             Department helper = _depCont.GetDepartmentsWithHospitals().Where(p => p.departmentId == id.GetValueOrDefault()).ToList().FirstOrDefault();
             department.hospital = helper.hospital;
+
+            var doctors = _depCont.GetDoctors(id.GetValueOrDefault());
+            department.doctorsList = doctors;
+
             if (department == null)
             {
                 return NotFound();
@@ -45,8 +55,36 @@ namespace HospitalProject.Controllers
         }
         public IActionResult Create()
         {
-            ViewData["hospitalId"] = new SelectList(_depCont.GetHospitals(), "hospitalId", "hospitalId");
+            //ViewData["hospitalId"] = new SelectList(_depCont.GetHospitals(), "hospitalId", "hospitalId");
+            IEnumerable<SelectListItem> hospitalList = _hosRep.GetAll().Select(d => new SelectListItem
+            {
+                Text = d.hospitalName,
+                Value = d.hospitalId.ToString()
+            });
+            ViewBag.HospitalList = hospitalList;
             return View();
+        }
+
+        public IActionResult AddDoctor(int? id)
+        {
+            IEnumerable<SelectListItem> doctorList = _docRep.GetAll().Select(d => new SelectListItem
+            {
+                Text = d.firstName + " " + d.lastName + " " + d.specialityName,
+                Value = d.doctorId.ToString()
+            });
+            ViewBag.DoctorList = doctorList;
+
+            var a = _depCont.Find(id.GetValueOrDefault());
+
+            return View(a);
+        }
+
+        [HttpPost]
+        public IActionResult AddDoctor(int? departmentId, int? doctorId)
+        {
+            if(departmentId != null && doctorId != null)
+                _depCont.AddDoctor(doctorId.GetValueOrDefault(), departmentId.GetValueOrDefault());
+            return RedirectToAction("Details", "Departments", new {id = departmentId.GetValueOrDefault()});
         }
 
         [HttpPost]
@@ -61,7 +99,7 @@ namespace HospitalProject.Controllers
             ViewData["hospitalId"] = new SelectList(_depCont.GetHospitals(), "hospitalId", "hospitalId", department.hospitalId);
             return View(department);
         }
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -73,7 +111,13 @@ namespace HospitalProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["hospitalId"] = new SelectList(_depCont.GetHospitals(), "hospitalId", "hospitalId", department.hospitalId);
+            //ViewData["hospitalId"] = new SelectList(_depCont.GetHospitals(), "hospitalId", "hospitalId", department.hospitalId);
+            IEnumerable<SelectListItem> hospitalList = _hosRep.GetAll().Select(d => new SelectListItem
+            {
+                Text = d.hospitalName,
+                Value = d.hospitalId.ToString()
+            });
+            ViewBag.HospitalList = hospitalList;
             return View(department);
         }
 

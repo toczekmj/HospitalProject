@@ -8,27 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using HospitalProject.Data;
 using HospitalProject.Models;
 using HospitalProject.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalProject.Controllers
 {
+
     public class DoctorsController : Controller
     {
         private readonly ISpecialityRepository _specRepo;
         private readonly IDoctorRepository _docRepo;
+        private readonly IDepartmentRepository _depRepo;
 
-
-
-        public DoctorsController(IDoctorRepository docRepo, ISpecialityRepository specRepo)
+        public DoctorsController(IDoctorRepository docRepo, ISpecialityRepository specRepo, IDepartmentRepository depRepo)
         {
             _specRepo = specRepo;
             _docRepo = docRepo;
+            _depRepo = depRepo;
         }
 
         public IActionResult Index()
         {
             List<Doctor> doctors = _docRepo.GetDoctorsWithSpecialities();
             return View(doctors);
-            //return View(_docRepo.GetAll());
         }
 
         public IActionResult Details(int? id)
@@ -53,11 +54,17 @@ namespace HospitalProject.Controllers
                 Text = d.specialityName,
                 Value = d.specialityId.ToString()
             });
+            
+            //IEnumerable<SelectListItem> depList = _depRepo.GetAll().Select(d => new SelectListItem{
+            //    Text = d.departmentName,
+            //    Value = d.departmentId.ToString()
+            //});
+            //ViewBag.DepartmentList = depList;
             ViewBag.DoctorsList = doctorList;
             return View();
         }
 
-         [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("doctorId,firstName,lastName,specialityId")] Doctor doctor)
         {
@@ -81,7 +88,15 @@ namespace HospitalProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["specialityId"] = new SelectList(_docRepo.GetSpecialities(), "specialityId", "specialityId", doctor.specialityId);
+            //ViewData["specialityId"] = new SelectList(_docRepo.GetSpecialities(), "specialityId", "specialityId", doctor.specialityId);
+
+            IEnumerable<SelectListItem> doctorList = _specRepo.GetAll().Select(d => new SelectListItem
+            {
+                Text = d.specialityName,
+                Value = d.specialityId.ToString()
+            });
+            ViewBag.DoctorsList = doctorList;
+
             return View(doctor);
         }
 

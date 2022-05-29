@@ -14,5 +14,7 @@ namespace HospitalProject.Repository
         void Remove(int id);
         public List<Hospital> GetHospitals();
         public List<Department> GetDepartmentsWithHospitals();
+        public List<Doctor> GetDoctors(int id);
+        public void AddDoctor(int docid, int depid);
     }
 }

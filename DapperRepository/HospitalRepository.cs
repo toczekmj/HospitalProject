@@ -45,8 +45,6 @@ namespace HospitalProject.DapperRepository
 
         public List<Hospital> GetAll()
         {
-            //var sql = "SELECT * FROM hospital";
-            //return db.Query<Hospital>(sql).ToList();
             return db.GetAll<Hospital>().ToList();
         }
 

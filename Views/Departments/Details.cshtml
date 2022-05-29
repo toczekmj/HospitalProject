@@ -6,6 +6,8 @@
 
 <h1>Details</h1>
 
+
+
 <div>
     <h4>Department</h4>
     <hr />
@@ -24,7 +26,50 @@
         </dd>
     </dl>
 </div>
+
+
+<h2>Doctors in this department</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.doctorsList.FirstOrDefault().doctorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.doctorsList.FirstOrDefault().firstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.doctorsList.FirstOrDefault().lastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.doctorsList.FirstOrDefault().specialityName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.doctorsList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.doctorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.firstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.specialityName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.departmentId">Edit</a> |
+    <a asp-action="AddDoctor" asp-route-id="@Model.departmentId">Add Doctor to this department | </a>
     <a asp-action="Index">Back to List</a>
 </div>

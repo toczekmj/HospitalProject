@@ -39,15 +39,6 @@ namespace HospitalProject.DapperRepository
             department.departmentId = id;
 
             return department;
-
-            //var d = new Department()
-            //{
-            //    departmentName = department.departmentName,
-            //    hospitalId = department.hospitalId,
-            //};
-            //db.Insert(d);
-            //return department;
-
         }
 
         public Department Find(int id)
@@ -83,8 +74,38 @@ namespace HospitalProject.DapperRepository
 
         public Department Update(Department department)
         {
-            db.Update<Department>(department);
+            var sql = "UPDATE department SET departmentName = @departmentName, hospitalId = @hospitalId WHERE departmentId = @departmentId;";
+            db.Execute(sql, new
+            {
+                @departmentName = department.departmentName,
+                @hospitalId = department.hospitalId,
+                @departmentId = department.departmentId,
+            });
+
             return department;
+        }
+
+        public List<Doctor> GetDoctors(int id)
+        {
+            var sql = "SELECT d.doctorId, d.firstName, d.lastName, spec.specialityName "
+                + "FROM doctor d "
+                + "INNER JOIN doctor_department dd ON d.doctorId = dd.doctorId "
+                + "INNER JOIN department dep ON dep.departmentId = dd.departmentId "
+                + "INNER JOIN speciality spec ON spec.specialityId = d.specialityId "
+                + "WHERE dd.departmentId = @id;";
+            var res = db.Query<Doctor>(sql, new {@id = id});
+            return res.ToList();
+            //return null;
+        }
+
+        public void AddDoctor(int docid, int depid)
+        {
+            var sql = "INSERT INTO doctor_department (doctorId, departmentId) VALUES (@docid, @depid)";
+            db.Execute(sql, new
+            {
+                @docid = docid,
+                @depid = depid
+            });
         }
 
         public List<Hospital> GetHospitals()

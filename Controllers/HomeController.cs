@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalProject.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
